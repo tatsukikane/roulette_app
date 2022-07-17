@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'cheat_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Hangover Tomorrow...'),
     );
   }
 }
@@ -28,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var target = "";
 //各変数
   //画面に表示する要素のインデックス番号を格納
   int index = 0;
@@ -53,7 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
       isStart = !isStart;
       if(isStart){
         timer = Timer.periodic(Duration(milliseconds: 100), onTimer);
-      }else{
+      }else if(!isStart && target != ""){
+        timer.cancel();
+        displayWord = target;
+        setState(() {
+        });
+        //ターゲットリセット
+        target = '';
+      } else{
         //setStateは、StatefulWidget の「状態」を管理する State に対して、
         //その状態が変化したことを教えて画面の再描画を依頼する
         setState(() {
@@ -63,14 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  //ルーレット起動中の関数?
+  //ルーレット起動後、名前が常に入れ替わって表示される関数
   void onTimer(Timer timer){
     setState(() {
       index++;
+      //リスト内の名前の数を超えたらリセット。1からスタート
       if(index > checkedElem.length -1){
         index = 0;
       }
-      //ここにelseifを入れればチート機能いけそう
+      //ここにルーレット起動中の参加者の名前が常に代入されていく
       displayWord = checkedElem[index];
     });
   }
@@ -92,7 +104,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        backgroundColor: Color.fromRGBO(66, 65, 64, 1),
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            widget.title,
+            style: GoogleFonts.shadowsIntoLight(
+              textStyle: TextStyle(
+                fontSize: 32
+            )),
+          ),
+        ),
       ),
       body: Center(
         child: Column(
@@ -102,79 +124,130 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               flex: 5,
               child: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage('assets/newlogo.png'),
+                  fit: BoxFit.cover,
+                )),
                 width: double.infinity,
-                color: Colors.blue,
+                // color: Colors.blue,
                 child: Center(
-                  child: Text(
-                    displayWord,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                      // color: Colors.black
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 104.0),
+                    child: Text(
+                      displayWord,
+                      style: GoogleFonts.secularOne(
+                        textStyle: TextStyle(
+                          fontSize: 56,
+                          fontWeight: FontWeight.bold
+                      )),
+
+                      // style: TextStyle(
+                      //   fontWeight: FontWeight.bold,
+                      //   fontSize: 40,
+                      //   // color: Colors.black
+                      // ),
                     ),
                   ),
                 ),
               ),
             ),
             //ここに非表示の入力欄を作る
-            Expanded(
-              flex: 1,
+            // Expanded(
+            //   flex: 1,
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         child: Icon(
+            //           Icons.outlet,
+            //           color: Colors.green,
+            //           size: 40,
+            //         ),
+            //       ),
+            //     ],
+            //   )),
+            Container(
+              color: Color.fromRGBO(66, 65, 64, 1),
               child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //要素追加欄左のアイコン
                   Expanded(
-                    child: Icon(
-                      Icons.outlet,
-                      color: Colors.green,
-                      size: 40,
+                    child: IconButton(
+                      icon: Icon(
+                        // Icons.flutter_dash,
+                        Icons.touch_app,
+                        color: Colors.white
+                      ),
+                      onPressed: () async {
+                        var result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CheatPage(),
+                          ),
+                        );
+                        if(result != null){
+                          target = result;
+                        }
+                        print(target);
+                      },
+)
+                  ),
+                  //要素入力欄
+                  Expanded(
+                    flex: 5,
+                    child: TextField(
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      controller: addController,
+                      decoration: InputDecoration(
+                        // fillColor: Colors.white,
+                        // filled: true,
+                        // contentPadding: EdgeInsets.all(4), 
+                        //input欄の薄い文字
+                        hintText: 'メンバーを追加',
+                        hintStyle: TextStyle(color: Colors.white),
+                        // border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  //要素追加ボタン
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size.fromHeight(42),
+                        primary: Colors.white,
+                        onPrimary: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      // style: ButtonStyle(
+                      //   backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(66, 65, 64, 1)),
+                      // ),
+                      onPressed: (){
+                        addElem();
+                      },
+                      child: Text(
+                        'Add',
+                        style: TextStyle(
+                          color: Color.fromRGBO(66, 65, 64, 1),
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              )),
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                //要素追加欄左のアイコン
-                Expanded(
-                  child: Icon(
-                    Icons.flutter_dash,
-                    color: Colors.blue,
-                    size: 40,
-                  ),
-                ),
-                //要素入力欄
-                Expanded(
-                  flex: 5,
-                  child: TextField(
-                    controller: addController,
-                    decoration: InputDecoration(
-                      // contentPadding: EdgeInsets.all(4), 
-                      //input欄の薄い文字
-                      hintText: '追加項目を入力',
-                      // border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                //要素追加ボタン
-                Expanded(
-                  flex: 2,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                    ),
-                    onPressed: (){
-                      addElem();
-                    },
-                    child: Text('Add'),
-                  ),
-                ),
-              ],
+              ),
             ),
             // 下の項目表示欄
             Expanded(
-              flex: 6,
+              flex: 3,
               child: Container(
                 width: double.infinity,
-                color: Colors.blue[100],
+                // color: Colors.blue[100],
+                color: Color.fromRGBO(66, 65, 64, 0.4),
                 child: Center(
                   child: Column(
                     children: [
@@ -186,12 +259,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           //itemBuilderプロパティで返すWidgetを複数生成する
                           itemBuilder: (BuildContext context, int index){
                             return CheckboxListTile(
+                              activeColor: Color.fromRGBO(66, 65, 64, 1),
                               value: checkBox[index],
                               title: Text(
                                 //追加された項目を表示
                                 elem[index],
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                  // fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.white
                                 ),
                               ),
                               //チェックボックスを先頭に配置を変更
@@ -226,6 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(66, 65, 64, 1),
         //スタートされたら、ボタンの色変える。ストップしたら戻る
         child: isStart == true
           ? Icon(
