@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:roulette_app/splash_screen.dart';
 
 import 'cheat_page.dart';
 
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Hangover Tomorrow...'),
+      // home: const SplashScreen(),
     );
   }
 }
@@ -31,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final player = AudioPlayer();
   var target = "";
 //各変数
   //画面に表示する要素のインデックス番号を格納
@@ -46,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //チェックボックスで選択されている要素を格納する配列
   List<String> checkedElem = [];
   //画面上部に表示する要素を格納する タイトル
-  String displayWord = 'CheatRoulette';
+  String displayWord = 'Roulette';
   //テキストフィールドにアクセスするためのコントローラー
   TextEditingController addController = TextEditingController();
 
@@ -98,6 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
+
+
+  // Stream<void> get onPlayerComplete =>
+  //   _platform.completeStream.filter(playerId);
 
 
   @override
@@ -197,6 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Expanded(
                     flex: 5,
                     child: TextField(
+                      autofocus: true,
                       style: TextStyle(color: Colors.white, fontSize: 24),
                       controller: addController,
                       decoration: InputDecoration(
@@ -310,7 +319,12 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.pink,
           )
           : Icon(Icons.whatshot),
-        onPressed:(){
+        onPressed:() async{
+          ReleaseMode.loop;
+          await player.setSource(AssetSource('roulette_bgm.mp3'));
+          //  await player.stop();
+          // await player.loop();
+
           startTimer();
         },
       ),

@@ -73,6 +73,7 @@ class _CheatPageState extends State<CheatPage> {
               Container(
                 width: 240,
                 child: TextField(
+                  autofocus: true,
                   style: TextStyle(color: Colors.white, fontSize: 24),
                   decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(

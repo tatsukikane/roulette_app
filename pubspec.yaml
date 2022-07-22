@@ -36,8 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.2.4
   google_fonts: ^3.0.1
+  video_player: ^2.4.5
+  audioplayers: ^1.0.1
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.9.3
   flutter_test:
     sdk: flutter
 
@@ -50,6 +53,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+flutter_icons:
+  android: true
+  ios: true
+  image_path: 'assets/app_icon.jpeg'
+  adaptive_icon_background: '#ffffff'
+  adaptive_icon_foreground: 'assets/app_icon.jpeg'
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -62,6 +71,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/newlogo.png
+    - assets/app_icon.jpeg
+    - assets/appicon.png
+    - roulette_bgm.mp3
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -90,6 +103,7 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_native_splash:
-  color: "#404142"
+  color: "#444240"
+  image: assets/penapp2.png
   # image: assets/newlogo.png
-  image: assets/app_top_text.png
+  # image: assets/app_top_text.png
