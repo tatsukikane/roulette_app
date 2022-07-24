@@ -37,7 +37,7 @@ dependencies:
   flutter_native_splash: ^2.2.4
   google_fonts: ^3.0.1
   video_player: ^2.4.5
-  audioplayers: ^1.0.1
+  audioplayers: ^0.20.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.3
@@ -73,7 +73,7 @@ flutter:
     - assets/newlogo.png
     - assets/app_icon.jpeg
     - assets/appicon.png
-    - roulette_bgm.mp3
+    - assets/
 
   #   - images/a_dot_ham.jpeg
 

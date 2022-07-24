@@ -34,7 +34,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final player = AudioPlayer();
+  //audioplayers用定義
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false; //再生中かどうか
+  Duration duration = Duration.zero; //bgmの長さ
+  Duration position = Duration.zero; //現在再生位置
+  var isPlayingnum = 1;  //loopをするとisPlayingがバグる為代替、2の倍数だったら再生状態。
+
+  //---------------------------------------------
   var target = "";
 //各変数
   //画面に表示する要素のインデックス番号を格納
@@ -53,6 +60,37 @@ class _MyHomePageState extends State<MyHomePage> {
   String displayWord = 'Roulette';
   //テキストフィールドにアクセスするためのコントローラー
   TextEditingController addController = TextEditingController();
+
+  //audioplayers処理----------------------------------------
+  @override
+  void initState() {
+    super.initState();
+    // setAudio();
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.PLAYING;
+      });
+    });
+
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    audioPlayer.onAudioPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+     });
+  }
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+
+    super.dispose();
+  }
+  //--------------------------------------------------
 
 //関数
   //スタートボタン関数
@@ -320,11 +358,20 @@ class _MyHomePageState extends State<MyHomePage> {
           )
           : Icon(Icons.whatshot),
         onPressed:() async{
-          ReleaseMode.loop;
-          await player.setSource(AssetSource('roulette_bgm.mp3'));
-          //  await player.stop();
-          // await player.loop();
-
+          isPlayingnum += 1;
+          print(isPlayingnum);
+          //BGM用
+          if (isPlayingnum % 2 != 0){
+            print('ポーズ');
+            await audioPlayer.pause();
+          }else{
+            print('スタート');
+            audioPlayer.setReleaseMode(ReleaseMode.LOOP);
+            final player = AudioCache(prefix: 'assets/');
+            final url = await player.load('roulette_bgm.mp3');
+            await audioPlayer.play(url.path, isLocal: true);
+          }
+          //-------------------------------------
           startTimer();
         },
       ),
