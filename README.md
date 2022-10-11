@@ -1,16 +1,14 @@
-# roulette_app
+# チートルーレット
 
-A new Flutter project.
+チート機能付きルーレットアプリ
 
-## Getting Started
+## 詳細
 
-This project is a starting point for a Flutter application.
+一見通常のルーレットアプリですが、
+名前を追加する欄の左横にあるボタンを押すと、チート画面に移行。
+チート画面で当選させたい人の名前を入力すると100%当選させる事ができます。
 
-A few resources to get you started if this is your first Flutter project:
+メインのキャラクターはblenderで作成
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Lab: GooglePlayStore](https://play.google.com/store/apps/details?id=com.tatsuki.roulette_app)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
