@@ -10,5 +10,5 @@
 
 メインのキャラクターはblenderで作成
 
-- [Lab: GooglePlayStore](https://play.google.com/store/apps/details?id=com.tatsuki.roulette_app)
+- [GooglePlayStore](https://play.google.com/store/apps/details?id=com.tatsuki.roulette_app)
 
